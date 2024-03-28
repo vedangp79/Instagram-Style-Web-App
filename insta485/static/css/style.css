@@ -1,0 +1,112 @@
+.left {
+    float: left;
+}
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.right {
+    float: right;
+}
+
+/* Style for the navigation bar */
+.navbar {
+    background-color: #333;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+/* Navigation links */
+.navbar a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+}
+
+/* Main content container */
+.content {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+}
+
+.post-image {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* User list container */
+.user {
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+/* User profile picture */
+.profile-picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Username link */
+.user a {
+    font-weight: bold;
+    margin-right: auto;
+}
+
+/* Relationship status and button container */
+.user form,
+.user span {
+    margin-left: 10px;
+}
+
+/* Unfollow/Follow button styles */
+.user input[type="submit"] {
+    padding: 5px 15px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.user input[type="submit"]:hover {
+    background-color: #ddd;
+}
+
+/* Title of the page */
+.content h1 {
+    text-align: center;
+    color: #333;
+}
+
+.post {
+    border: 1px solid black;
+    /* margin: 1em; */
+}
+
+/* Hyperlinks */
+.link {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+.timestamp {
+    color: gray;
+    text-decoration: none;
+    font-weight: bold;
+    float: right;
+    vertical-align: middle;
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Insta485</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+    <body>
+      <div class="navbar">
+        <a href="{{ url_for('show_index') }}">Insta485</a>
+        <a href="{{ url_for('show_login') }}">Login</a>
+      </div>
+      <form action="{{ url_for('handle_account') }}?target={{ url_for('show_index') }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required/>
+        <input type="text" name="fullname" required/>
+        <input type="text" name="username" required/>
+        <input type="text" name="email" required/>
+        <input type="password" name="password" required/>
+        <input type="submit" name="signup" value="sign up"/>
+        <input type="hidden" name="operation" value="create"/>
+      </form>
+      Have an account? 
+      <a href="{{ url_for('show_login') }}" class="link">Log in!</a>
+    </body>
+</html>
+

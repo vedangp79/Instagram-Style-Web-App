@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Insta485</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+<body>
+    <div class="navbar">
+        <a href="{{ url_for('show_index') }}">Insta485</a>
+        <a href="{{ url_for('show_explore') }}">Explore</a>
+        <a href="{{ url_for('show_user', user_url_slug=logname) }}">{{ logname }}</a>
+    </div>
+    <div style="font-weight: bold;">{{ logname }}</div>
+    <form action="{{ url_for('handle_account') }}?target={{ url_for('show_account_create') }}" method="post" enctype="multipart/form-data">
+        <input type="submit" name="delete" value="confirm delete account"/>
+        <input type="hidden" name="operation" value="delete"/>
+    </form>
+</body>
+</html>

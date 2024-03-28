@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Explore - Insta485</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/">Insta485</a>
+    <a href="{{ url_for('show_explore') }}">Explore</a>
+    <a href="{{ url_for('show_user', user_url_slug=logname) }}">{{ logname }}</a>
+</div>
+
+<div class="content">
+    <h1>Discover People</h1>
+    {% for user in users_not_followed %}
+        <div class="user">
+            <img src="{{ url_for('uploaded_file', filename=user.user_image) }}" alt="{{ user.username }}'s profile picture" class="profile-picture">
+            <a href="{{ url_for('show_user', user_url_slug=user.username) }}" class="link">{{ user.username }}</a>
+            <form action="{{ url_for('manage_following') }}?target={{ url_for('show_explore') }}" method="post" enctype="multipart/form-data">
+                <input type="submit" name="follow" value="follow"/>
+                <input type="hidden" name="username" value="{{ user.username }}"/>
+                <input type="hidden" name="operation" value="follow"/>
+            </form>
+        </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Insta485</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+
+<div class="navbar">
+    <a href="/">Insta485</a>
+    <a href="{{ url_for('show_explore') }}">Explore</a>
+    <a href="{{ url_for('show_user', user_url_slug=logname) }}">{{ logname }}</a>
+</div>
+
+
+<div class="content">
+    <h1>Following</h1>
+    {% for user in following %}
+        <div class="user">
+            <img src="{{ url_for('uploaded_file', filename = user.filename) }}" alt="{{ user.username }}'s profile picture" class="profile-picture">
+            <a href="{{ url_for('show_user', user_url_slug=user.username) }}" class="link">{{ user.username }}</a>
+            {% if logname != user.username %}
+                {% if user.is_following %}
+                    <span>following</span>
+                    <!-- Unfollow form -->
+                    <form action="{{ url_for('manage_following') }}?target={{ request.path }}" method="post" enctype="multipart/form-data">
+                        <input type="submit" name="unfollow" value="unfollow"/>
+                        <input type="hidden" name="username" value="{{user.username}}"/>
+                        <input type="hidden" name="operation" value="unfollow"/>
+                    </form>
+                {% else %}
+                    <span>not following</span>
+                    <!-- Follow form -->
+                    <form action="{{ url_for('manage_following') }}?target={{ request.path }}" method="post" enctype="multipart/form-data">
+                        <input type="submit" name="follow" value="follow"/>
+                        <input type="hidden" name="username" value="{{user.username}}"/>
+                        <input type="hidden" name="operation" value="follow"/>
+                    </form>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+
+</body>
+
+</html>

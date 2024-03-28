@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Insta485</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+<body>
+    <div class="navbar">
+        <a href="{{ url_for('show_index') }}">Insta485</a>
+        <a href="{{ url_for('show_explore') }}">Explore</a>
+        <a href="{{ url_for('show_user', user_url_slug=logname) }}">{{ logname }}</a>
+    </div>
+    <img src="{{ url_for('uploaded_file', filename=filename) }}" alt="{{ logname }}'s profile picture" style="vertical-align: middle;">
+     {{ username }}
+    <form action="{{ url_for('handle_account') }}?target={{ url_for('show_account_edit') }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*"/>
+        <input type="text" name="fullname" value="{{ fullname }}" required/>
+        <input type="text" name="email" value="{{ email }}" required/>
+        <input type="submit" name="update" value="submit"/>
+        <input type="hidden" name="operation" value="edit_account"/>
+    </form>
+    <div><a href="{{ url_for('show_update_password') }}" class="link">Change password</a></div>
+    <div><a href="{{ url_for('show_account_delete') }}" class="link">Delete account</a></div>
+</body>
+</html>
+

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Insta485</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/">Insta485</a>
+    <a href="{{ url_for('show_explore') }}">Explore</a>
+    <a href="{{ url_for('show_user', user_url_slug=logname) }}">{{ logname }}</a>
+</div>
+
+<div class="content">
+    <h1><a href="{{ url_for('show_user', user_url_slug=user.username) }}" style="color: inherit; text-decoration: none;">{{ user.username }}</a></h1>
+    <!-- Relationship status -->
+    {% if logname != user.username %}
+    {% block nested1 scoped %}
+        {% if is_following %}
+            Following
+            <!-- Unfollow form -->
+            <form action="{{ url_for('manage_following') }}?target={{ url_for('show_user', user_url_slug=user.username) }}" method="post" enctype="multipart/form-data">
+                <input type="submit" name="unfollow" value="unfollow"/>
+                <input type="hidden" name="username" value="{{user.username}}"/>
+                <input type="hidden" name="operation" value="unfollow"/>
+            </form>
+        {% else %}
+            Not following 
+            <!-- Follow form -->
+            <form action="{{ url_for('manage_following') }}?target={{ url_for('show_user', user_url_slug=user.username) }}" method="post" enctype="multipart/form-data">
+                <input type="submit" name="follow" value="follow"/>
+                <input type="hidden" name="username" value="{{user.username}}"/>
+                <input type="hidden" name="operation" value="follow"/>
+            </form>
+        {% endif %}
+    {% endblock %}
+    {% else %} <div>
+            <a href="{{ url_for('show_account_edit') }}" class="link">Edit profile</a>
+            <form action="{{ url_for('handle_logout') }}" method="post">
+                <input type="submit" name="logout" value="Logout"/>
+            </form>
+        </div>
+    {% endif %}
+
+    <p>
+        {% if posts|length == 1 %} {{ posts|length }} post
+        {% else %} {{ posts|length }} posts
+        {% endif %}
+        <a href="{{ url_for('show_followers', user_url_slug=user.username) }}" class="link">
+            {% if num_followers == 1 %} {{ num_followers }} follower
+            {% else %} {{ num_followers }} followers
+            {% endif %}
+        </a>
+        <a href="{{ url_for('show_following', user_url_slug=user.username) }}" class="link">
+            {{ num_following }} following
+        </a>
+    </p>
+    <p>{{ user.fullname }}</p>
+
+    {% if logname == user.username %}
+        <form action="{{ url_for('handle_post') }}?target={{ url_for('show_user', user_url_slug = user.username )}}" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required/>
+            <input type="submit" name="create_post" value="upload new post"/>
+            <input type="hidden" name="operation" value="create"/>
+        </form>
+    {% endif %}
+    <br>
+    <!-- Posts -->
+    <div>
+        {% if posts|length > 0 %}
+        {% block nested2 scoped %}
+            {% for post in posts %}
+            <a href="{{ url_for('show_post', postid_url_slug=post.postid) }}">
+                <img src="{{ url_for('uploaded_file', filename=post.filename) }}" alt="Post image" class="post-image">
+            </a>
+            {% endfor %}
+        {% endblock %}
+        {% else %}No posts yet.
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>

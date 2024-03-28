@@ -1,0 +1,85 @@
+<!-- post.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Insta485</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="navbar">
+    <a href="{{ url_for('show_index') }}">Insta485</a>
+    <a href="{{ url_for('show_explore') }}">Explore</a>
+    <a href="{{ url_for('show_user', user_url_slug=logname) }}">{{ logname }}</a>
+</div>
+
+<div class="content">
+    <!-- Display post details -->
+    <div>
+        <!-- ... Display post image, likes, etc. ... -->
+        <div>
+            <img src="{{ url_for('uploaded_file', filename = post.user_image) }}" alt="{{ post.owner }}'s profile picture" class="profile-picture">
+            <a href="{{ url_for('show_user', user_url_slug = post.owner) }}" class="link">{{ post.owner }}</a>
+            <a href="{{ url_for('show_post', postid_url_slug=post.postid) }}" class="timestamp">{{ post.created }}</a>
+        </div>
+        <img src="{{ url_for('uploaded_file', filename=post.filename) }}" alt="{{ post.owner }}'s post" class="post-image">
+        <div class="post-footer">
+            <!-- Logic for Like/Unlike button -->
+            {% if post.is_liked %}
+                <form action="{{ url_for('handle_like') }}?target={{ url_for('show_post', postid_url_slug=post.postid) }}" method="post" enctype="multipart/form-data" class="center">
+                    <label>
+                        {% if post.likes == 1 %} {{ post.likes }} like
+                        {% else %} {{ post.likes }} likes
+                        {% endif %}
+                    </label>
+                    <input type="hidden" name="operation" value="unlike"/>
+                    <input type="hidden" name="postid" value="{{ post.postid }}"/>
+                    <input type="submit" name="unlike" value="unlike"/>
+                </form>
+            {% else %}
+                <form action="{{ url_for('handle_like') }}?target={{ url_for('show_post', postid_url_slug=post.postid) }}" method="post" enctype="multipart/form-data" class="center">
+                    <label>
+                        {% if post.likes == 1 %} {{ post.likes }} like
+                        {% else %} {{ post.likes }} likes
+                        {% endif %}
+                    </label>
+                    <input type="hidden" name="operation" value="like"/>
+                    <input type="hidden" name="postid" value="{{ post.postid }}"/>
+                    <input type="submit" name="like" value="like"/>
+                </form>
+            {% endif %}
+            {% for comment in comments %}
+            <div>
+                <a href="{{ url_for('show_user', user_url_slug=comment.owner)}}" class="link">{{ comment.owner }}</a>
+                 {{ comment.text }}
+                {% block nested scoped %}
+                {% if logname == comment.owner %}
+                <form action="{{ url_for('handle_comment') }}?target={{ request.path }}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="operation" value="delete"/>
+                    <input type="hidden" name="commentid" value="{{ comment.commentid }}"/>
+                    <input type="submit" name="uncomment" value="delete"/>
+                </form>
+                {% endif %}
+                {% endblock %}
+            </div>
+            {% endfor %}
+            <form action="{{ url_for('handle_comment') }}?target={{ request.path }}" method="post" enctype="multipart/form-data" class="right">
+                <input type="hidden" name="operation" value="create"/>
+                <input type="hidden" name="postid" value="{{ post.postid }}"/>
+                <input type="text" name="text" required/>
+                <input type="submit" name="comment" value="comment"/>
+            </form>
+        </div>
+        {% if logname == post.owner %}
+            <!-- Delete post form for post owner -->
+            <form action="{{ url_for('handle_post') }}?target={{ url_for('show_user', user_url_slug=logname) }}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="operation" value="delete"/>
+                <input type="hidden" name="postid" value="{{ post.postid }}"/>
+                <input type="submit" name="delete" value="delete this post"/>
+            </form>
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>
